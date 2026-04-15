@@ -11,7 +11,9 @@ import {
   Clock, 
   ArrowRight,
   MoreHorizontal,
-  Loader2
+  Loader2,
+  Calculator,
+  Columns
 } from "lucide-react";
 import { Button } from "@/components/ui/Button";
 import Link from "next/link";
@@ -72,10 +74,19 @@ export default function ProjectsPage() {
           <h1 className="text-3xl font-bold text-white">Carteira de Projetos</h1>
           <p className="text-wood-400">Acompanhe o fluxo completo, da medição à entrega final.</p>
         </div>
-        <div className="flex gap-2">
-          <Button variant="secondary" className="hidden sm:flex border-wood-800 text-wood-400 text-sm">
-            Exportar Relatório
-          </Button>
+        <div className="flex flex-wrap gap-2">
+          <Link href="/dashboard/projects/kanban">
+            <Button variant="secondary" className="hidden sm:flex border-wood-800 text-wood-100 text-sm">
+              <Columns size={18} className="mr-2 text-brass-500" />
+              Quadro Kanban
+            </Button>
+          </Link>
+          <Link href="/dashboard/projects/new-quote">
+            <Button variant="secondary" className="hidden sm:flex border-wood-800 text-wood-100 text-sm">
+              <Calculator size={18} className="mr-2 text-brass-500" />
+              Gerar Orçamento
+            </Button>
+          </Link>
           <Button 
             className="flex items-center gap-2"
             onClick={() => setIsModalOpen(true)}
