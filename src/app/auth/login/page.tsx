@@ -1,12 +1,42 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { Hammer, LogIn, Mail, Lock, GitBranch } from "lucide-react";
+import { Hammer, LogIn, Mail, Lock, GitBranch, AlertCircle, Loader2 } from "lucide-react";
 import { Button } from "@/components/ui/Button";
 import { Input } from "@/components/ui/Input";
 import Link from "next/link";
+import { useState } from "react";
+import { auth } from "@/services/firebase";
+import { signInWithEmailAndPassword } from "firebase/auth";
+import { useRouter } from "next/navigation";
 
 export default function LoginPage() {
+  const router = useRouter();
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
+
+  const handleLogin = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setLoading(true);
+    setError("");
+
+    try {
+      await signInWithEmailAndPassword(auth, email, password);
+      router.push("/dashboard");
+    } catch (err: any) {
+      console.error("Login error:", err);
+      if (err.code === "auth/user-not-found" || err.code === "auth/wrong-password" || err.code === "auth/invalid-credential") {
+        setError("E-mail ou senha incorretos.");
+      } else {
+        setError("Ocorreu um erro ao tentar entrar. Tente novamente.");
+      }
+    } finally {
+      setLoading(false);
+    }
+  };
+
   return (
     <main className="min-h-screen grid lg:grid-cols-2 bg-wood-950">
       {/* Visual Section - Visible on Desktop */}
@@ -44,18 +74,35 @@ export default function LoginPage() {
             <p className="text-wood-400">Insira suas credenciais para continuar.</p>
           </div>
 
-          <form className="space-y-6">
+          <form className="space-y-6" onSubmit={handleLogin}>
+            {error && (
+              <motion.div 
+                initial={{ opacity: 0, y: -10 }}
+                animate={{ opacity: 1, y: 0 }}
+                className="bg-red-500/10 border border-red-500/50 text-red-500 p-4 rounded-xl flex items-center gap-3 text-sm"
+              >
+                <AlertCircle size={20} />
+                {error}
+              </motion.div>
+            )}
+
             <Input 
               label="E-mail Corporativo"
               type="email"
               placeholder="seu@email.com"
               className="mt-1"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              required
             />
             <Input 
               label="Sua Senha"
               type="password"
               placeholder="••••••••"
               className="mt-1"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              required
             />
 
             <div className="flex items-center justify-between text-sm">
@@ -68,9 +115,13 @@ export default function LoginPage() {
               </Link>
             </div>
 
-            <Button className="w-full">
-              <LogIn size={20} />
-              Entrar na Oficina
+            <Button className="w-full" type="submit" disabled={loading}>
+              {loading ? (
+                <Loader2 className="animate-spin" size={20} />
+              ) : (
+                <LogIn size={20} />
+              )}
+              {loading ? "Autenticando..." : "Entrar na Oficina"}
             </Button>
           </form>
 
