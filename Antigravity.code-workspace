@@ -1,0 +1,20 @@
+{
+  "folders": [
+    {
+      "path": "C:\\Users\\alecs\\.gemini\\antigravity\\scratch\\woodmaster"
+    }
+  ],
+  "settings": {
+    "files.exclude": {
+      "**/.git": true,
+      "**/.DS_Store": true
+    }
+  },
+  "extensions": {
+    "recommendations": [
+      "ms-python.python",
+      "esbenp.prettier-vscode",
+      "dbaeumer.vscode-eslint"
+    ]
+  }
+}
