@@ -13,6 +13,8 @@ export const metadata: Metadata = {
   description: "Sistema Premium de Gestão para Marcenarias Modernas",
 };
 
+import { AuthProvider } from "@/modules/auth/context/AuthContext";
+
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -21,7 +23,9 @@ export default function RootLayout({
   return (
     <html lang="pt-BR">
       <body className={`${outfit.variable} font-sans antialiased`}>
-        {children}
+        <AuthProvider>
+          {children}
+        </AuthProvider>
       </body>
     </html>
   );

@@ -12,25 +12,41 @@ import {
   DollarSign,
   FileText,
   Save,
-  Printer
+  Printer,
+  TrendingUp
 } from "lucide-react";
 import { Button } from "@/components/ui/Button";
 import { Input } from "@/components/ui/Input";
 import { motion, AnimatePresence } from "framer-motion";
+import { inventoryService } from "@/modules/erp/services/inventoryService";
+import { useAuth } from "@/modules/auth/context/AuthContext";
+import { useEffect } from "react";
 
 export default function NewQuotePage() {
+  const { user } = useAuth();
   const [step, setStep] = useState(1);
+  const [inventory, setInventory] = useState<any[]>([]);
   const [items, setItems] = useState([
-    { id: 1, name: "MDF Louro Freijó 18mm", type: "Chapa", qty: 2, price: 320 },
-    { id: 2, name: "Dobradiça Amortecedor", type: "Ferragem", qty: 12, price: 12.5 },
+    { id: 1, name: "Selecione um material", type: "Chapa", qty: 1, price: 0 },
   ]);
+  const [margin, setMargin] = useState(30); // 30% default profit margin
+  const [labor, setLabor] = useState(1500);
+
+  useEffect(() => {
+    if (!user) return;
+    const fetchInventory = async () => {
+      const data = await inventoryService.getAll(user.uid);
+      setInventory(data);
+    };
+    fetchInventory();
+  }, [user]);
 
   const subtotal = useMemo(() => 
     items.reduce((acc, current) => acc + (current.qty * current.price), 0),
   [items]);
 
-  const [labor, setLabor] = useState(1500);
-  const total = subtotal + labor;
+  const profitValue = useMemo(() => (subtotal + labor) * (margin / 100), [subtotal, labor, margin]);
+  const total = subtotal + labor + profitValue;
 
   const addItem = () => {
     setItems([...items, { id: Date.now(), name: "", type: "Diversos", qty: 1, price: 0 }]);
@@ -125,12 +141,25 @@ export default function NewQuotePage() {
                 {items.map((item) => (
                   <div key={item.id} className="grid grid-cols-12 gap-4 items-end bg-wood-900/30 p-4 rounded-xl border border-white/5">
                     <div className="col-span-12 md:col-span-5">
-                      <Input 
-                        label="Descrio do Material" 
-                        value={item.name} 
-                        onChange={(e) => updateItem(item.id, 'name', e.target.value)}
-                        placeholder="Nome do material"
-                      />
+                      <div className="space-y-1.5">
+                        <label className="text-xs font-bold text-wood-500 uppercase tracking-widest pl-1">Material</label>
+                        <select 
+                          className="w-full h-[54px] bg-white/5 border border-white/10 rounded-2xl px-4 text-sm text-white focus:border-brass-500 focus:outline-none transition-all"
+                          value={item.name}
+                          onChange={(e) => {
+                            const selected = inventory.find(i => i.name === e.target.value);
+                            updateItem(item.id, 'name', e.target.value);
+                            if (selected) {
+                              updateItem(item.id, 'price', parseFloat(selected.price.replace(/[^\d]/g, '')) / 100 || 0);
+                            }
+                          }}
+                        >
+                          <option value="" className="bg-wood-900 text-wood-400">Selecionar do estoque...</option>
+                          {inventory.map(inv => (
+                            <option key={inv.id} value={inv.name} className="bg-wood-900 text-white">{inv.name}</option>
+                          ))}
+                        </select>
+                      </div>
                     </div>
                     <div className="col-span-4 md:col-span-2">
                       <Input 
@@ -201,8 +230,29 @@ export default function NewQuotePage() {
                         type="number" 
                         value={labor} 
                         onChange={(e) => setLabor(parseFloat(e.target.value))}
-                        className="text-right font-bold text-emerald-400"
+                        className="text-right font-bold text-white"
                       />
+                    </div>
+                  </div>
+
+                  <div className="flex items-center justify-between p-4 bg-wood-900/30 rounded-xl">
+                    <div className="flex items-center gap-3">
+                      <div className="w-10 h-10 bg-emerald-500/10 text-emerald-400 rounded-lg flex items-center justify-center">
+                        <TrendingUp size={20} />
+                      </div>
+                      <div>
+                        <p className="font-bold text-white">Margem de Lucro</p>
+                        <p className="text-xs text-wood-500 italic">Markup sobre custos totais</p>
+                      </div>
+                    </div>
+                    <div className="w-32 relative">
+                      <Input 
+                        type="number" 
+                        value={margin} 
+                        onChange={(e) => setMargin(parseFloat(e.target.value))}
+                        className="text-right font-bold text-brass-500 pr-8"
+                      />
+                      <span className="absolute right-4 top-1/2 -translate-y-1/2 text-wood-500 font-bold">%</span>
                     </div>
                   </div>
                 </div>
@@ -220,6 +270,10 @@ export default function NewQuotePage() {
                   <div className="flex justify-between text-wood-400 text-sm">
                     <span>Mão de Obra</span>
                     <span>R$ {labor.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}</span>
+                  </div>
+                  <div className="flex justify-between text-emerald-400 text-sm font-bold">
+                    <span>Lucro ({margin}%)</span>
+                    <span>+ R$ {profitValue.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}</span>
                   </div>
                 </div>
                 <div className="flex justify-between text-white font-bold text-2xl">
