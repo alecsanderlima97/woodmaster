@@ -158,9 +158,11 @@ export default function DashboardPage() {
               )}
             </div>
           </div>
-          <button className="w-full py-4 bg-wood-950 text-wood-100 hover:bg-brass-500 hover:text-wood-950 rounded-2xl transition-all text-[10px] uppercase tracking-[2px] font-black border border-white/5 mt-4">
-            Gestão de Materiais
-          </button>
+          <Link href="/dashboard/inventory" className="w-full">
+            <button className="w-full py-4 bg-wood-950 text-wood-100 hover:bg-brass-500 hover:text-wood-950 rounded-2xl transition-all text-[10px] uppercase tracking-[2px] font-black border border-white/5 mt-4">
+              Gestão de Materiais
+            </button>
+          </Link>
         </div>
       </div>
     </div>

@@ -101,9 +101,19 @@ export default function DashboardLayout({ children }: { children: ReactNode }) {
           ))}
         </nav>
 
+        <div className="pt-8 border-t border-white/5 mt-auto">
+          <div className="px-2">
+            <p className="text-[10px] font-black text-wood-700 uppercase tracking-[4px]">Powered by</p>
+            <p className="text-xs font-black text-white uppercase tracking-tighter mt-1 italic">
+              OrQuestra<span className="text-brass-500">CS</span>
+            </p>
+            <p className="text-[8px] text-wood-800 font-bold uppercase tracking-[2px]">Sistemas Personalizados</p>
+          </div>
+        </div>
+
         <button 
           onClick={handleLogout}
-          className="flex items-center gap-3 px-4 py-4 text-wood-600 hover:text-red-400 hover:bg-red-500/10 rounded-2xl transition-all group font-bold uppercase text-[10px] tracking-[2px]"
+          className="flex items-center gap-3 px-4 py-4 text-wood-600 hover:text-red-400 hover:bg-red-500/10 rounded-2xl transition-all group font-bold uppercase text-[10px] tracking-[2px] mt-4"
         >
           <LogOut size={18} className="group-hover:translate-x-1 transition-transform" />
           Sair da Conta

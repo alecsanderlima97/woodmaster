@@ -73,23 +73,34 @@ export default function LoginPage() {
   };
 
   return (
-    <main className="min-h-screen flex items-center justify-center bg-[#0a0a0a] p-6 relative overflow-hidden font-sans">
-      {/* Background Cinematográfico */}
+    <main className="min-h-screen flex items-center justify-center bg-black p-6 relative overflow-hidden font-sans">
+      {/* Background Cinematográfico com Imagem de Marcenaria */}
       <div className="absolute inset-0 z-0">
-        <div className="absolute top-[-20%] left-[-10%] w-[60%] h-[60%] bg-brass-600/10 blur-[150px] rounded-full animate-pulse"></div>
-        <div className="absolute bottom-[-10%] right-[-10%] w-[50%] h-[50%] bg-wood-800/5 blur-[120px] rounded-full"></div>
-        {/* Linhas de Textura de Madeira Subtis */}
-        <div className="absolute inset-0 opacity-[0.03] pointer-events-none bg-[url('https://www.transparenttextures.com/patterns/dark-wood.png')]"></div>
+        <div className="absolute inset-0 bg-black/60 z-10"></div>
+        <img 
+          src="/images/bg-login.png" 
+          alt="Marcenaria Background" 
+          className="w-full h-full object-cover blur-[2px] scale-110"
+        />
+        <div className="absolute top-[-20%] left-[-10%] w-[60%] h-[60%] bg-brass-600/20 blur-[150px] rounded-full animate-pulse z-20"></div>
       </div>
 
       <motion.div 
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.8, ease: "easeOut" }}
-        className="w-full max-w-[460px] z-10"
+        transition={{ duration: 1, ease: "easeOut" }}
+        className="w-full max-w-[480px] z-30"
       >
-        <div className="glass p-8 md:p-12 rounded-[40px] border border-white/10 shadow-[0_0_50px_rgba(0,0,0,0.5)] relative overflow-hidden">
+        <div className="glass p-10 md:p-14 rounded-[48px] border border-white/10 shadow-[0_0_80px_rgba(0,0,0,0.8)] relative overflow-hidden">
           
+          {/* OrQuestraCS Logo Badge */}
+          <div className="absolute top-6 right-8 opacity-40 hover:opacity-100 transition-opacity">
+            <p className="text-[10px] font-black text-white tracking-[4px] uppercase italic">
+              OrQuestra<span className="text-brass-500">CS</span>
+            </p>
+            <p className="text-[7px] text-wood-500 font-bold uppercase tracking-[2px] text-right">Sistemas Personalizados</p>
+          </div>
+
           {/* Badge de Sucesso (Premium Overlay) */}
           <AnimatePresence>
             {success && (
@@ -97,38 +108,38 @@ export default function LoginPage() {
                 initial={{ opacity: 0, scale: 1.1 }}
                 animate={{ opacity: 1, scale: 1 }}
                 exit={{ opacity: 0 }}
-                className="absolute inset-0 bg-wood-950/95 backdrop-blur-xl z-50 flex flex-col items-center justify-center text-center p-8"
+                className="absolute inset-0 bg-wood-950/98 backdrop-blur-2xl z-50 flex flex-col items-center justify-center text-center p-8"
               >
                 <motion.div
                   initial={{ scale: 0, rotate: -45 }}
                   animate={{ scale: 1, rotate: 0 }}
                   transition={{ type: "spring", damping: 10, stiffness: 100 }}
-                  className="w-24 h-24 bg-gradient-to-br from-brass-400 to-brass-600 rounded-full flex items-center justify-center text-wood-950 mb-8 shadow-[0_0_30px_rgba(196,160,82,0.4)]"
+                  className="w-28 h-28 bg-gradient-to-br from-brass-400 to-brass-600 rounded-[32px] flex items-center justify-center text-wood-950 mb-10 shadow-[0_0_50px_rgba(196,160,82,0.5)]"
                 >
-                  <CheckCircle size={56} strokeWidth={2.5} />
+                  <CheckCircle size={64} strokeWidth={2.5} />
                 </motion.div>
                 <motion.h2 
                   initial={{ opacity: 0, y: 10 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: 0.2 }}
-                  className="text-3xl font-black text-white mb-3 uppercase tracking-tighter"
+                  className="text-4xl font-black text-white mb-4 uppercase tracking-tighter italic"
                 >
-                  {isRegister ? "Conta Criada" : "Acesso Autorizado"}
+                  {isRegister ? "Forja Concluída" : "Acesso Autorizado"}
                 </motion.h2>
                 <motion.p 
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
                   transition={{ delay: 0.4 }}
-                  className="text-wood-400 font-medium tracking-wide"
+                  className="text-wood-400 font-bold tracking-widest uppercase text-xs"
                 >
-                  Sincronizando sua oficina digital...
+                  Ajustando as ferramentas da sua oficina...
                 </motion.p>
-                <div className="mt-8 w-48 h-1 bg-wood-900 rounded-full overflow-hidden">
+                <div className="mt-12 w-56 h-1.5 bg-wood-900/50 rounded-full overflow-hidden border border-white/5">
                   <motion.div 
                     initial={{ width: 0 }}
                     animate={{ width: "100%" }}
                     transition={{ duration: 1.8, ease: "easeInOut" }}
-                    className="h-full bg-brass-500"
+                    className="h-full bg-brass-500 shadow-[0_0_15px_rgba(196,160,82,0.8)]"
                   />
                 </div>
               </motion.div>
@@ -136,19 +147,26 @@ export default function LoginPage() {
           </AnimatePresence>
 
           {/* Header */}
-          <div className="text-center space-y-4 mb-12">
+          <div className="text-center space-y-6 mb-12">
             <motion.div 
-              whileHover={{ rotate: 15, scale: 1.1 }}
-              className="inline-flex p-5 bg-gradient-to-br from-brass-400 to-brass-600 rounded-[24px] shadow-2xl shadow-brass-600/20 mb-4"
+              whileHover={{ rotate: 360, scale: 1.1 }}
+              transition={{ duration: 0.8 }}
+              className="inline-flex p-6 bg-gradient-to-br from-brass-500 to-brass-700 rounded-[32px] shadow-[0_20px_40px_rgba(196,160,82,0.3)] mb-2"
             >
-              <Hammer className="text-wood-950" size={32} />
+              <Hammer className="text-wood-950" size={40} />
             </motion.div>
-            <h1 className="text-4xl font-black text-white tracking-tighter uppercase italic">
-              Wood<span className="text-brass-500">Master</span>
-            </h1>
-            <p className="text-wood-500 text-xs font-bold uppercase tracking-[4px]">
-              OrQuestraCS • High-End ERP
-            </p>
+            <div>
+              <h1 className="text-5xl font-black text-white tracking-tighter uppercase italic leading-none">
+                Wood<span className="text-brass-500">Master</span>
+              </h1>
+              <div className="flex items-center justify-center gap-4 mt-3">
+                <div className="h-[1px] w-8 bg-brass-500/30"></div>
+                <p className="text-wood-500 text-[10px] font-black uppercase tracking-[5px]">
+                  Professional ERP
+                </p>
+                <div className="h-[1px] w-8 bg-brass-500/30"></div>
+              </div>
+            </div>
           </div>
 
           <form className="space-y-5" onSubmit={handleAuth}>

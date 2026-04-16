@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
+import Link from "next/link";
 import { Modal } from "@/components/ui/Modal";
 import { Input } from "@/components/ui/Input";
 import { Button } from "@/components/ui/Button";
@@ -86,7 +87,14 @@ export function AddProjectModal({ isOpen, onClose, onSuccess }: AddProjectModalP
           </div>
 
           <div className="space-y-2">
-            <label className="text-sm font-medium text-wood-400">Cliente Responsável</label>
+            <div className="flex justify-between items-center">
+              <label className="text-sm font-medium text-wood-400">Cliente Responsável</label>
+              {customers.length === 0 && (
+                <Link href="/dashboard/customers" className="text-[10px] text-brass-500 hover:underline font-bold uppercase tracking-widest">
+                  + Cadastrar Cliente
+                </Link>
+              )}
+            </div>
             <select 
               className="w-full bg-wood-950 border border-white/10 rounded-xl px-4 py-3 text-white focus:outline-none focus:ring-2 focus:ring-brass-500/20 focus:border-brass-500"
               value={formData.customerId}

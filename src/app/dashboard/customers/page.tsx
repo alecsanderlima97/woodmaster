@@ -170,7 +170,7 @@ export default function CustomersPage() {
           </div>
           <h3 className="text-2xl font-bold text-white mb-2">Sua lista está vazia</h3>
           <p className="text-wood-500 mb-8">Comece cadastrando seu primeiro cliente para gerenciar projetos.</p>
-          <Button variant="secondary" className="px-10">Cadastrar agora</Button>
+          <Button variant="secondary" className="px-10" onClick={() => setIsModalOpen(true)}>Cadastrar agora</Button>
         </div>
       )}
     </div>
