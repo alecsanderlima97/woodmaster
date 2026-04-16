@@ -150,9 +150,14 @@ export default function InventoryPage() {
                       )}
                     </td>
                     <td className="px-6 py-5">
-                      <button className="text-wood-600 hover:text-white transition-colors p-1">
-                        <MoreVertical size={20} />
-                      </button>
+                      <div className="flex items-center gap-2">
+                        <button className="text-wood-600 hover:text-brass-500 transition-colors p-1" title="Editar">
+                          <Plus size={18} className="rotate-45" /> {/* Simulating an edit icon with plus or just use generic */}
+                        </button>
+                        <button className="text-wood-600 hover:text-red-500 transition-colors p-1" title="Excluir">
+                          <AlertTriangle size={18} />
+                        </button>
+                      </div>
                     </td>
                   </tr>
                 ))}

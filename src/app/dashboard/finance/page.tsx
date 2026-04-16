@@ -20,6 +20,7 @@ import { useAuth } from "@/modules/auth/context/AuthContext";
 import { financeService } from "@/modules/erp/services/financeService";
 import { Transaction } from "@/modules/erp/types/transaction";
 import { AddTransactionModal } from "@/modules/erp/components/AddTransactionModal";
+import { pdfGenerator } from "@/utils/pdfGenerator";
 
 export default function FinancePage() {
   const { user } = useAuth();
@@ -58,6 +59,24 @@ export default function FinancePage() {
     filter === "Todos" || t.type === filter
   );
 
+  const handleExportPDF = () => {
+    const totals = {
+      income: totalIncome.toLocaleString('pt-BR', { minimumFractionDigits: 2 }),
+      expense: totalExpense.toLocaleString('pt-BR', { minimumFractionDigits: 2 }),
+      balance: balance.toLocaleString('pt-BR', { minimumFractionDigits: 2 })
+    };
+    
+    const formattedTransactions = transactions.map(t => ({
+      date: new Date(t.date).toLocaleDateString('pt-BR'),
+      description: t.description,
+      category: t.category,
+      type: t.type === 'Receita' ? 'income' : 'expense',
+      value: t.amount.toLocaleString('pt-BR', { minimumFractionDigits: 2 })
+    }));
+
+    pdfGenerator.generateFinancialReport(formattedTransactions, totals);
+  };
+
   return (
     <div className="space-y-8">
       <AddTransactionModal 
@@ -72,7 +91,11 @@ export default function FinancePage() {
           <p className="text-wood-400">Gestão financeira e controle de capital da oficina.</p>
         </div>
         <div className="flex gap-2">
-          <Button variant="secondary" className="hidden sm:flex border-wood-800 text-wood-400 text-sm">
+          <Button 
+            variant="secondary" 
+            className="hidden sm:flex border-wood-800 text-wood-400 text-sm hover:text-white"
+            onClick={handleExportPDF}
+          >
             <Download size={18} className="mr-2" />
             PDF
           </Button>

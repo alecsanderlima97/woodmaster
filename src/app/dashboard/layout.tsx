@@ -25,7 +25,6 @@ const sidebarItems = [
   { icon: Package, label: "Estoque", href: "/dashboard/inventory" },
   { icon: Users, label: "Clientes", href: "/dashboard/customers" },
   { icon: Wallet, label: "Financeiro", href: "/dashboard/finance" },
-  { icon: Settings, label: "Configurações", href: "/dashboard/settings" },
 ];
 
 export default function DashboardLayout({ children }: { children: ReactNode }) {
@@ -134,24 +133,56 @@ export default function DashboardLayout({ children }: { children: ReactNode }) {
           </div>
 
           <div className="flex items-center gap-6">
-            <button className="relative text-wood-500 hover:text-white transition-colors p-2 hover:bg-white/5 rounded-xl">
-              <Bell size={22} />
-              <span className="absolute top-2 right-2 w-2 h-2 bg-brass-500 rounded-full border-2 border-[#0a0a0a]"></span>
-            </button>
+            <div className="relative group">
+              <button className="relative text-wood-500 hover:text-white transition-colors p-2 hover:bg-white/5 rounded-xl">
+                <Bell size={22} />
+                <span className="absolute top-2.5 right-2.5 w-2 h-2 bg-brass-500 rounded-full border-2 border-[#0a0a0a]"></span>
+              </button>
+              {/* Notificações Dropdown */}
+              <div className="absolute right-0 mt-2 w-72 bg-[#121212] border border-white/5 rounded-2xl shadow-2xl opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all z-50 p-4">
+                <p className="text-[10px] font-black text-wood-500 uppercase tracking-widest mb-4">Notificações</p>
+                <div className="space-y-3">
+                  <div className="flex gap-3 text-xs p-2 hover:bg-white/5 rounded-lg transition-colors">
+                    <div className="w-2 h-2 mt-1 bg-brass-500 rounded-full shrink-0"></div>
+                    <p><span className="font-bold">Novo Orçamento:</span> Armário de Cozinha - Cliente João Silva.</p>
+                  </div>
+                  <div className="flex gap-3 text-xs p-2 hover:bg-white/5 rounded-lg transition-colors">
+                    <div className="w-2 h-2 mt-1 bg-brass-500 rounded-full shrink-0"></div>
+                    <p><span className="font-bold">Estoque Baixo:</span> Chapa MDF Louro Freijó (2 unidades).</p>
+                  </div>
+                </div>
+              </div>
+            </div>
             
-            <div className="flex items-center gap-4 pl-6 border-l border-white/5">
+            <div className="flex items-center gap-4 pl-6 border-l border-white/5 relative group">
               <div className="text-right">
                 <p className="text-sm font-black text-white uppercase tracking-tight leading-none">{user.displayName || "Mestre Marceneiro"}</p>
                 <p className="text-[10px] text-wood-600 uppercase tracking-widest font-black mt-1">Admin</p>
               </div>
-              <div className="w-11 h-11 rounded-2xl bg-gradient-to-br from-wood-800 to-wood-950 flex items-center justify-center border border-white/10 shadow-lg group hover:border-brass-500/30 transition-all">
+              <button className="w-11 h-11 rounded-2xl bg-gradient-to-br from-wood-800 to-wood-950 flex items-center justify-center border border-white/10 shadow-lg group-hover:border-brass-500/30 transition-all overflow-hidden">
                  {user.photoURL ? (
-                   <img src={user.photoURL} alt="Avatar" className="w-full h-full rounded-2xl object-cover" />
+                   <img src={user.photoURL} alt="Avatar" className="w-full h-full object-cover" />
                  ) : (
                     <span className="text-brass-500 font-black text-xs uppercase italic">
                       {user.displayName?.slice(0, 2) || user.email?.slice(0, 2)}
                     </span>
                  )}
+              </button>
+
+              {/* Perfil Dropdown */}
+              <div className="absolute right-0 top-full pt-2 w-56 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all z-50">
+                <div className="bg-[#121212] border border-white/10 rounded-2xl shadow-2xl p-2">
+                  <Link href="/dashboard/settings" className="flex items-center gap-3 px-4 py-3 text-xs font-bold text-wood-400 hover:text-white hover:bg-white/5 rounded-xl transition-all">
+                    <Settings size={16} /> CONFIGURAÇÕES
+                  </Link>
+                  <Link href="/dashboard/settings" className="flex items-center gap-3 px-4 py-3 text-xs font-bold text-wood-400 hover:text-white hover:bg-white/5 rounded-xl transition-all">
+                    <Users size={16} /> GESTÃO DE ACESSO
+                  </Link>
+                  <div className="h-px bg-white/5 my-2 mx-2"></div>
+                  <button onClick={handleLogout} className="w-full flex items-center gap-3 px-4 py-3 text-xs font-bold text-red-500 hover:bg-red-500/10 rounded-xl transition-all">
+                    <LogOut size={16} /> ENCERRAR SESSÃO
+                  </button>
+                </div>
               </div>
             </div>
           </div>

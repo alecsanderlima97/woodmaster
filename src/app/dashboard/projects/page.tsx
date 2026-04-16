@@ -20,8 +20,11 @@ import Link from "next/link";
 import { useState, useEffect } from "react";
 import { useAuth } from "@/modules/auth/context/AuthContext";
 import { projectService } from "@/modules/erp/services/projectService";
+import { projectItemService } from "@/modules/erp/services/projectItemService"; // Assume service exists
 import { Project } from "@/modules/erp/types/project";
 import { AddProjectModal } from "@/modules/erp/components/AddProjectModal";
+import { pdfGenerator } from "@/utils/pdfGenerator";
+import { customerService } from "@/modules/erp/services/customerService";
 
 const statusSteps = [
   { label: "Medição", icon: Layers, color: "text-blue-400" },
@@ -200,8 +203,14 @@ export default function ProjectsPage() {
 
                 {/* Actions */}
                 <div className="flex items-center justify-end gap-3 border-t lg:border-t-0 pt-4 lg:pt-0 lg:pl-6 lg:border-l lg:border-wood-900">
-                  <button className="p-2 hover:bg-white/5 rounded-lg text-wood-500 hover:text-white transition-all">
-                    <MoreHorizontal size={20} />
+                  <button 
+                    onClick={async () => {
+                      const client = await customerService.getById(user.uid, project.customerId);
+                      pdfGenerator.generateProjectOS(project, client);
+                    }}
+                    className="p-2 hover:bg-white/5 rounded-lg text-brass-500 hover:text-brass-400 transition-all title='Gerar O.S.'"
+                  >
+                    <Download size={20} />
                   </button>
                   <Link href={`/dashboard/projects/${project.id}`} className="flex items-center gap-2 px-4 py-2 bg-wood-900 hover:bg-brass-500 hover:text-wood-950 text-wood-100 rounded-xl text-sm font-bold transition-all">
                     Detalhes
