@@ -47,7 +47,7 @@ export function FinancialChart() {
               textTransform: 'uppercase'
             }}
             itemStyle={{ color: '#d97706' }}
-            formatter={(value: number) => [`R$ ${value.toLocaleString('pt-BR')}`, 'Faturamento']}
+            formatter={(value: any) => [`R$ ${Number(value).toLocaleString('pt-BR')}`, 'Faturamento']}
           />
           <Bar 
             dataKey="total" 
