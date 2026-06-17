@@ -10,6 +10,15 @@ const outfit = Outfit({
 
 export const metadata: Metadata = {
   title: "WoodMaster | Orquestracs",
+  icons: {
+    apple: "/pwa-192.png",
+    icon: [
+      { sizes: "32x32", url: "/favicon.png" },
+      { sizes: "192x192", url: "/pwa-192.png" },
+      { sizes: "512x512", url: "/pwa-512.png" },
+    ],
+    shortcut: "/favicon.png",
+  },
   description: "Sistema Premium de Gestão para Marcenarias Modernas",
 };
 
